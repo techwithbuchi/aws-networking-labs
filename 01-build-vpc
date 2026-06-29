@@ -1,1 +1,141 @@
+# Build a Virtual Private Cloud (Amazon VPC)
+
+## Project Overview
+
+In this project, I designed and deployed a custom Amazon Virtual Private Cloud (VPC) to create an isolated networking environment within AWS. The objective was to understand the foundational networking components that support secure and scalable cloud infrastructure.
+
+The implementation included creating a custom VPC, configuring a public subnet, assigning an IPv4 CIDR block, attaching an Internet Gateway, and enabling internet connectivity for resources launched inside the subnet.
+
+This project reinforces core networking concepts that every Cloud Engineer and Solutions Architect relies on when designing production AWS environments.
+
+---
+
+# Architecture
+
+> *(Insert Architecture Diagram Here)*
+
+---
+
+# Objectives
+
+* Design a custom Virtual Private Cloud
+* Configure IP addressing using CIDR notation
+* Create a public subnet
+* Enable automatic public IP assignment
+* Attach an Internet Gateway
+* Verify internet connectivity
+* Explore AWS CloudShell and the AWS CLI
+
+---
+
+# AWS Services Used
+
+* Amazon VPC
+* Subnets
+* Internet Gateway
+* Route Tables
+* AWS CloudShell
+* AWS CLI
+
+---
+
+# Skills Demonstrated
+
+* AWS Networking
+* CIDR Planning
+* Network Segmentation
+* Internet Connectivity
+* Cloud Infrastructure Design
+* AWS CLI Fundamentals
+
+---
+
+# Implementation Steps
+
+## 1. Created a Custom VPC
+
+Created a new Amazon VPC and assigned an IPv4 CIDR block to define the private address space for the environment.
+
+---
+
+## 2. Configured a Public Subnet
+
+Created a subnet within the VPC and enabled Auto-Assign Public IPv4 Address so that newly launched EC2 instances automatically receive public IP addresses.
+
+---
+
+## 3. Attached an Internet Gateway
+
+Provisioned and attached an Internet Gateway (IGW) to provide internet access for resources inside the VPC.
+
+---
+
+## 4. Configured Routing
+
+Configured routing to direct internet-bound traffic (0.0.0.0/0) through the Internet Gateway, allowing public subnet resources to communicate externally.
+
+---
+
+## 5. Validated Connectivity
+
+Verified that the networking configuration successfully allowed internet access through the configured public subnet.
+
+---
+
+# Validation
+
+The deployment was considered successful after confirming:
+
+* VPC created successfully
+* Public subnet associated correctly
+* Internet Gateway attached
+* Public IP assignment enabled
+* Resources could communicate with the internet
+
+---
+
+# Challenges Faced
+
+### Understanding CIDR Blocks
+
+Choosing the appropriate CIDR range initially required careful consideration. Although AWS accepts many valid ranges, selecting an address space that supports future subnet expansion is an important design decision.
+
+### Relationship Between Components
+
+One of the key learning points was understanding that simply creating a subnet does not make it public. Public connectivity depends on several components working together:
+
+* Internet Gateway
+* Route Table
+* Public Route
+* Public IP Address
+
+Missing any one of these prevents internet access.
+
+---
+
+# Lessons Learned
+
+* A VPC provides logical isolation rather than internet connectivity.
+* Public access requires coordinated configuration across multiple networking components.
+* CIDR planning should anticipate future growth rather than immediate requirements.
+* AWS networking is built from modular services that work together rather than a single "public subnet" setting.
+
+---
+
+# Production Considerations
+
+In a production environment, I would improve this architecture by:
+
+* Deploying resources across multiple Availability Zones for high availability.
+* Separating workloads into public and private subnets.
+* Using NAT Gateways for secure outbound internet access from private workloads.
+* Applying least-privilege Security Groups.
+* Enabling VPC Flow Logs for monitoring and troubleshooting.
+* Managing infrastructure with Terraform or CloudFormation rather than manual console configuration.
+
+---
+
+# Key Takeaways
+
+This project established the networking foundation required for nearly every AWS workload. Understanding how VPCs, subnets, routing, and Internet Gateways interact is fundamental to designing secure, scalable cloud architectures.
 
