@@ -1,1 +1,139 @@
+# VPC Traffic Flow and Security
+
+## Project Overview
+
+This project focused on controlling and securing network traffic within an Amazon Virtual Private Cloud (VPC). I configured route tables, Security Groups, and Network ACLs to understand how AWS evaluates traffic at both the instance and subnet levels.
+
+By implementing multiple layers of network security, I reinforced the AWS Shared Responsibility Model and gained practical experience designing secure cloud networking architectures.
+
+---
+
+# Architecture
+
+> *(Insert Architecture Diagram Here)*
+
+---
+
+# Objectives
+
+* Configure Route Tables
+* Understand traffic flow inside a VPC
+* Configure Security Groups
+* Configure Network ACLs
+* Compare Security Groups with Network ACLs
+* Validate secure network communication
+
+---
+
+# AWS Services Used
+
+* Amazon VPC
+* Route Tables
+* Internet Gateway
+* Security Groups
+* Network ACLs
+* EC2
+
+---
+
+# Skills Demonstrated
+
+* AWS Networking
+* Layered Security
+* Traffic Routing
+* Firewall Configuration
+* Network Segmentation
+* Cloud Security Fundamentals
+
+---
+
+# Implementation Steps
+
+## 1. Configured Route Tables
+
+Updated the route table associated with the public subnet to direct outbound internet traffic (0.0.0.0/0) through the Internet Gateway.
+
+---
+
+## 2. Configured Security Groups
+
+Created Security Group rules allowing inbound HTTP traffic while relying on the default outbound rule to permit return traffic.
+
+This demonstrated the stateful behavior of Security Groups.
+
+---
+
+## 3. Configured Network ACLs
+
+Reviewed the default Network ACL and explored how custom ACLs can explicitly allow or deny traffic at the subnet level.
+
+This demonstrated the stateless nature of Network ACLs.
+
+---
+
+## 4. Compared Security Layers
+
+Examined how Route Tables, Security Groups, and Network ACLs work together to determine whether traffic ultimately reaches an AWS resource.
+
+---
+
+# Validation
+
+Successfully verified:
+
+* Route table associated correctly
+* Internet Gateway reachable
+* Security Group rules functioning
+* Network ACL behavior understood
+* HTTP traffic successfully permitted
+
+---
+
+# Challenges Faced
+
+### Understanding Stateful vs Stateless Firewalls
+
+One of the biggest learning moments was distinguishing between Security Groups and Network ACLs.
+
+Initially they appear to perform similar functions, but their behavior differs significantly.
+
+* Security Groups are stateful.
+* Network ACLs are stateless.
+* Security Groups operate at the instance level.
+* Network ACLs operate at the subnet level.
+
+Understanding these differences is essential when troubleshooting connectivity issues.
+
+### Understanding Traffic Evaluation
+
+Another challenge was visualizing the sequence AWS follows when evaluating incoming traffic. Recognizing that successful communication depends on routing, subnet configuration, Security Groups, and Network ACLs together helped clarify the complete traffic flow.
+
+---
+
+# Lessons Learned
+
+* Route Tables determine where traffic is sent.
+* Security Groups control traffic entering and leaving individual resources.
+* Network ACLs provide an additional subnet-level security layer.
+* Multiple AWS networking services work together to enforce defense in depth.
+* Secure cloud networking relies on layered controls rather than a single firewall.
+
+---
+
+# Production Considerations
+
+In a production AWS environment, I would:
+
+* Restrict Security Group rules to trusted IP ranges instead of allowing public access where possible.
+* Apply separate Security Groups for web, application, and database tiers.
+* Use custom Network ACLs to enforce subnet-level security policies.
+* Enable VPC Flow Logs for auditing and troubleshooting.
+* Implement Infrastructure as Code (Terraform) to ensure repeatable and version-controlled network deployments.
+* Follow the principle of least privilege for all network access.
+
+---
+
+# Key Takeaways
+
+This project demonstrated that AWS network security is achieved through multiple complementary layers. Understanding how Route Tables, Security Groups, and Network ACLs interact is fundamental to building secure, resilient cloud environments and troubleshooting connectivity issues effectively.
 
