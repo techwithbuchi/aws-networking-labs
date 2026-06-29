@@ -1,1 +1,169 @@
+<img src="https://cdn.prod.website-files.com/677c400686e724409a5a7409/6790ad949cf622dc8dcd9fe4_nextwork-logo-leather.svg" alt="NextWork" width="300" />
+
+# VPC Monitoring with Flow Logs
+
+**Project Link:** [View Project](http://nextwork.ai/projects/aws-networks-monitoring)
+
+**Author:** Oscar Onokwuru  
+**Email:** onokwuruoscar101@gmail.com
+
+---
+
+## VPC Monitoring with Flow Logs
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-monitoring_3e1e79a1)
+
+---
+
+## Introducing Today's Project!
+
+### What is Amazon VPC?
+
+Amazon VPC (Virtual Private Cloud) is a service that enables you to create a private, isolated network within AWS where you can launch and manage cloud resources. It provides complete control over your networking configuration, including IP addresses, subnets, routing, and security rules.
+
+It is useful because it allows you to securely organize and protect your resources, control how they communicate with each other and the internet, and build scalable, highly available cloud architectures that meet different application and security requirements.
+
+
+### How I used Amazon VPC in this project
+
+In today's project, I used Amazon VPC to establish VPC peering between two separate Virtual Private Clouds, enabling resources in each VPC to communicate securely using private IP addresses. I configured the VPC peering connection, updated the route tables to direct traffic between the VPCs, and verified connectivity by testing communication between EC2 instances in the different VPCs. This exercise demonstrated how VPC peering provides seamless and secure networking across isolated AWS environments without requiring internet access or a VPN.
+
+And I also maximized the use of Flows
+
+### One thing I didn't expect in this project was...
+
+One thing I didn't expect in this project was that creating a VPC peering connection alone would not enable communication between the VPCs. I learned that I also needed to update the route tables on both sides to direct traffic through the peering connection. This reinforced the importance of proper routing configuration in AWS networking.
+
+
+### This project took me...
+
+This project took me about 2 hours to complete
+
+---
+
+## In the first part of my project...
+
+### Step 1 - Set up VPCs
+
+In this step, I will be creating two VPCs from scratch because although we can also set up monitoring for architectures with a single VPC, we're setting up two VPCs today.
+
+### Step 2 - Launch EC2 instances
+
+In this step, I will be launching my EC2 instances into the public subnets of VPC1 and VPC2 because I'll be needing them to help test communication between the 2 VPCs later in the project
+
+### Step 3 - Set up Logs
+
+In this step, I'll set up FlowLogs and create a space that stores all these records, which will provide a way to track inbound and outbound network traffic.
+
+### Step 4 - Set IAM permissions for Logs
+
+In this step, I will Set Up A Flow Log IAM Policy and Role because I need to give VPC Flow Logs the permission to write logs and send them to CloudWatch, and finish setting up my subnet's flow log.
+
+---
+
+## Multi-VPC Architecture
+
+I started my project by launching the VPC and More create feature, choosing 1 availability zone, and 1 public subnet. no private subnet, no NAT gateway
+
+The CIDR blocks for VPCs 1 and 2 are 10.1.0.0/16 and 10.2.0.0/16, respectively. They have to be unique because we will be using the VPC peering feature and would want to prevent any overlaps with ip addresses, during communications
+
+### I also launched EC2 instances in each subnet
+
+My EC2 instances' security groups allow ICMP traffic from ALL IP addresses. This is because we'll be doing a new ping test in just a second. It's going to require your security group to allow in ICMP traffic from all IP addresses, not just from the other VPC!
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-monitoring_e7fa8775)
+
+---
+
+## Logs
+
+Logs are like a diary for computer systems, used to record everything that happens in the AWS cloud, from logging in to errors popping up.
+
+Log groups are like a Big Folder in AWS where related logs are kept together.
+
+### I also set up a flow log for VPC 1
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-monitoring_e8398869)
+
+---
+
+## IAM Policy and Roles
+
+I created an IAM policy because by default, VPC Flow Logs don't have the permission to record logs and store them in my CloudWatch log group. This policy makes sure that my VPC can now send log data to my log group!
+
+I also created an IAM role because when you bundle IAM policies together, you create an IAM role. You then assign this role to AWS services or users, giving them the permissions included in the attached policies. Since we can't assign a policy to a service, it has to be a role
+
+A custom trust policy is a specific type of policy! They're different from IAM policies. While IAM policies help you define the actions a user/service can or cannot do, custom trust policies are used to very narrowly define who can use a role. Another way to think about it: using a custom trust policy is like using a special VIP list - only the services you pinpoint in your policy would be allowed to use your role.
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-monitoring_4334d777)
+
+---
+
+## In the second part of my project...
+
+### Step 5 - Ping testing and troubleshooting
+
+In this step, I will test VPC Peering because we're trying to get our instances to talk to each other. This means we're also testing our VPC peering setup at the same time!
+
+### Step 6 - Set up a peering connection
+
+In this step, I will create a Peering Connection and Configure Route Tables because this step to bridge our VPCs together!
+
+### Step 7 - Analyze flow logs
+
+In this step, I will analyze Flow Logs because I need to review the flow logs recorded about VPC 1's public subnet and analyse the flow logs to get some tasty insights
+
+---
+
+## Connectivity troubleshooting
+
+My first ping test between my EC2 instances had no replies, which means there's a problem with the communication between my two servers
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-monitoring_99d4ba42)
+
+I could receive ping replies if I ran the ping test using the other instance's public IP address, which means Instance 2 is correctly configured to respond to ping requests, and Instance 1 can actually communicate with Instance 2 if the traffic goes across the public internet!
+
+---
+
+## Connectivity troubleshooting
+
+Looking at VPC 1's route table, I identified that the ping test with Instance 2's private address failed because I had yet to configure VPC Peering and edit my route tables to achieve my desired results
+
+### To solve this, I set up a peering connection between my VPCs
+
+I also updated both VPCs' route tables so that my VPC can direct the right traffic to my VPC peering, which was created
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-monitoring_7316a13d)
+
+---
+
+## Connectivity troubleshooting
+
+I received ping replies from Instance 2's private IP address! This means that my VPC Peering connection was successful and my route table was configured correctly.
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-monitoring_4ec7821f)
+
+---
+
+## Analyzing flow logs
+
+Flow logs tell us about bytes of data that were sent successfully from the IP address A to B using a protocol on port, with the number of packets transferred and whether the traffic was allowed ("ACCEPT") or rejected ('REJECT")
+
+For example, the flow log I've captured tells us 344 bytes of data were sent successfully from the IP address 18.206.107.28 to 10.1.0.60 using TCP protocol on port 22, with 4 packets transferred, and the traffic was allowed ("ACCEPT").
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-monitoring_d116818e)
+
+---
+
+## Logs Insights
+
+Logs Insights is a CloudWatch feature that analyzes your logs. In Log Insights, you use queries to filter, process, and combine data to help you troubleshoot problems or better understand your network traffic!
+
+I ran the query Top 10 byte transfers by source and destination IP addresses. This query analyzes the top 10 biggest data transfers between IP addresses in my network! I'll find out which resources are moving the most data, which uncovers the busiest traffic routes in my network.
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-monitoring_3e1e79a1)
+
+---
+
+---
 
