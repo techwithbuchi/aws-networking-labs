@@ -1,1 +1,63 @@
+Project Overview
 
+Designed and implemented a private subnet inside an existing Amazon VPC to host resources that should not be directly accessible from the internet. The project focused on network isolation, subnet-specific routing, and subnet-level traffic filtering using custom Route Tables and Network ACLs.
+
+
+Business Scenario
+
+A company hosts a public-facing web application but needs to protect backend resources such as databases and internal application servers.
+
+Instead of exposing every resource to the internet, production AWS environments isolate sensitive workloads inside private subnets where they can only communicate with trusted resources.
+
+This project demonstrates that architecture.
+
+
+Architecture Decisions
+
+Instead of using the VPC's default networking configuration, I created dedicated networking components for the private subnet.
+
+
+Dedicated Route Table
+
+The private subnet received its own Route Table without a default route (0.0.0.0/0) pointing to an Internet Gateway.
+
+This ensures resources inside the subnet cannot receive direct inbound internet traffic.
+
+
+Dedicated Network ACL
+
+Instead of relying on the default Network ACL, I associated the subnet with a custom ACL to provide explicit subnet-level traffic control.
+
+Although the initial rules deny all traffic, this follows a security-first approach where only required communication is later permitted.
+
+Validation
+
+Verified that
+
+Private subnet successfully created
+Route Table correctly associated
+Internet Gateway not attached
+Network ACL associated
+Resources remained isolated from the internet
+Challenges Faced
+CIDR Planning
+
+One challenge was ensuring that the private subnet used a unique CIDR range that did not overlap with the public subnet.
+
+Subnet overlap prevents AWS from routing traffic correctly and results in deployment failures.
+
+
+Understanding Route Tables
+
+Initially it seemed that creating a private subnet automatically isolated it.
+
+I learned that subnet privacy is determined by routing rather than by the subnet itself.
+
+Without a route to an Internet Gateway, resources remain private.
+
+Lessons Learned
+Private subnets improve security through network isolation.
+Route Tables determine internet accessibility.
+Network ACLs provide subnet-level protection.
+CIDR planning is essential for scalable network design.
+Security is achieved through multiple layers rather than a single configuration.
