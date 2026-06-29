@@ -1,1 +1,197 @@
+<img src="https://cdn.prod.website-files.com/677c400686e724409a5a7409/6790ad949cf622dc8dcd9fe4_nextwork-logo-leather.svg" alt="NextWork" width="300" />
+
+# VPC Endpoints
+
+**Project Link:** [View Project](http://nextwork.ai/projects/aws-networks-endpoints)
+
+**Author:** Oscar Onokwuru  
+**Email:** onokwuruoscar101@gmail.com
+
+---
+
+## VPC Endpoints
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-endpoints_09bcaa8a)
+
+---
+
+## Introducing Today's Project!
+
+### What is Amazon VPC?
+
+Amazon VPC (Virtual Private Cloud) is a service that enables you to create and manage a logically isolated network within AWS. It allows you to define your own IP address ranges, subnets, route tables, and security controls.
+
+It is useful because it provides secure and flexible networking for AWS resources, allowing you to control traffic flow, isolate workloads, and build scalable cloud architectures that meet security and operational requirements.
+
+
+### How I used Amazon VPC in this project
+
+In today's project, I used Amazon VPC to create a VPC endpoint that enabled an EC2 instance in my public subnet to communicate with Amazon S3 without requiring internet access. I configured the endpoint, associated it with the appropriate route table, and verified that traffic to S3 was routed through the AWS network instead of an Internet Gateway. This demonstrated how VPC endpoints improve security and reduce dependency on public internet connectivity.
+
+
+### One thing I didn't expect in this project was...
+
+One thing I didn't expect in this project was that simply creating a VPC endpoint was not enough to enable access to Amazon S3. I also needed to associate the endpoint with the correct route table so that traffic destined for S3 would be routed through the endpoint. This highlighted how important route tables are in controlling network traffic within a VPC.
+
+
+### This project took me...
+
+This project took me approximately 2 hours
+
+---
+
+## In the first part of my project...
+
+### Step 1 - Architecture set up
+
+In this step, I will be setting up my Architecture because the VPC, which I'll create from scratch, will be connected to the EC2 and S3 buckets 
+
+### Step 2 - Connect to EC2 instance
+
+In this step, I will connect to my EC2 instance and try accessing S3 through the public internet because I need this to test the connectivity
+
+### Step 3 - Set up access keys
+
+In this step, I will create Access Keys because the EC2 instance needs credentials to access my AWS services.
+
+### Step 4 - Interact with S3 bucket
+
+In this step, I will try to use my EC2 instance to access my S3 bucket now because I've been able to successfully configure my EC2 with the right IAM to perform tasks like aws s3 ls, amongst others.
+
+---
+
+## Architecture set up
+
+I started my project by launching my VPC with one Availability zone and one public subnet. alongside my EC2 instance, which I'll connect 
+
+I also set up the S3 Bucket and uploaded 2 files in it.
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-endpoints_4334d777)
+
+---
+
+## Access keys
+
+### Credentials
+
+To set up my EC2 instance to interact with my AWS environment, I configured the AWS Access Key ID, AWS Secret Access Key, Default Region Name, and Default output format.
+
+Access keys are credentials for my applications and other servers to log into AWS and talk to my AWS services/resources.
+
+Secret access keys are like passwords that pair with your access key ID (my username). We need both to access AWS services.
+
+### Best practice
+
+Although I'm using access keys in this project, a best-practice alternative is to create an IAM role with the necessary permissions and attach it to your EC2 instance.
+
+---
+
+## Connecting to my S3 bucket
+
+The command I ran was "aws s3 ls" This command is used to list the s3 buckets available
+
+The terminal responded with "2026-06-24 11:06:49 nextwork-vpc-project-buchi". This indicated that the access keys I set up were successfully configured
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-endpoints_4334d778)
+
+---
+
+## Connecting to my S3 bucket
+
+I also tested the command "aws s3 ls s3://nextwork-vpc-project-buchi", which returned the files present in the s3 folder created
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-endpoints_4334d779)
+
+---
+
+## Uploading objects to S3
+
+To upload a new file to my bucket, I first ran the command "sudo touch /tmp/nextwork.txt." This command creates the nextwork.txt file in the /tmp folder
+
+The second command I ran was "aws s3 cp /tmp/nextwork.txt s3://nextwork-vpc-project-buchi". This command will upload that file into your bucket
+
+The third command I ran was "aws s3 ls s3://nextwork-vpc-project-buchi," which validated that the file was successfully copied and in the S3 bucket
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-endpoints_3e1e79a2)
+
+---
+
+## In the second part of my project...
+
+### Step 5 - Set up a Gateway
+
+In this step, I will create an endpoint, because the instance is connected to my bucket through the public internet.
+
+This isn't the most secure way to communicate - external threats and attacks can easily intercept my commands and get access to my AWS environment or sensitive data.
+
+### Step 6 - Bucket policies
+
+We're going to block off our S3 bucket from ALL traffic except traffic coming from the endpoint
+
+### Step 7 - Update route tables
+
+In this step, I will access our S3 bucket again because S3 bucket's access is only limited to our endpoint, can our EC2 instance still access your bucket?
+
+### Step 8 - Validate endpoint conection
+
+In this step, I will get our EC2 instance to interact with our S3 bucket one last time.
+
+---
+
+## Setting up a Gateway
+
+I set up an S3 Gateway, which is a type of endpoint used specifically for Amazon S3 and DynamoDB .
+
+### What are endpoints?
+
+An endpoint in AWS is a service that allows private connections between your VPC and other AWS services without needing the traffic to go over the internet.
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-endpoints_09bcaa8a)
+
+---
+
+## Bucket policies
+
+A bucket policy is a type of IAM policy designed for setting access permissions to an S3 bucket. Using bucket policies, you get to decide who can access the bucket and what actions they can perform with it.
+
+My bucket policy will deny all actions (s3:*) on our S3 bucket and its objects to everyone (Principal: "*")... unless the access is from the VPC endpoint with the ID defined in aws:sourceVpce.
+
+In other words, only traffic coming from our VPC endpoint can get access to your S3 bucket!
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-endpoints_7316a13d)
+
+---
+
+## Bucket policies
+
+Right after saving my bucket policy, my S3 bucket page showed 'denied access' warnings. This was because our policy denies all actions unless they come from our VPC endpoint. This means any attempt to access your bucket from other sources, including the AWS Management Console, is blocked!
+
+I also had to update my route table because if the route table doesn't have a route that directs traffic bound for S3 to our VPC endpoint, traffic from our EC2 instance will actually try to get to our S3 bucket through the public internet instead.
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-endpoints_4ec7821f)
+
+---
+
+## Route table updates
+
+To update my route table, I added a route that directs traffic to the S3 bucket to the VPCE endpoint
+
+After updating my public subnet's route table, my terminal could return the files in my s3 bucket
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-endpoints_d116818e)
+
+---
+
+## Endpoint policies
+
+An endpoint policy is a set of IAM-based permissions attached to a VPC endpoint that controls which AWS resources and actions can be accessed through the endpoint. It acts as an additional layer of security by allowing or denying specific requests, such as access to particular S3 buckets, even when network connectivity is already established.
+
+
+I updated my endpoint's policy by changing the effect from Allow to Deny. I could see the effect of this right away, because when i ran the command to list my buckets in s3 it failed.
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-endpoints_3e1e79a3)
+
+---
+
+---
 
