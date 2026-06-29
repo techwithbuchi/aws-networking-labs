@@ -1,1 +1,148 @@
+<img src="https://cdn.prod.website-files.com/677c400686e724409a5a7409/6790ad949cf622dc8dcd9fe4_nextwork-logo-leather.svg" alt="NextWork" width="300" />
+
+# VPC Peering
+
+**Project Link:** [View Project](http://nextwork.ai/projects/aws-networks-peering)
+
+**Author:** Oscar Onokwuru  
+**Email:** onokwuruoscar101@gmail.com
+
+---
+
+## VPC Peering
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-peering_88727bef)
+
+---
+
+## Introducing Today's Project!
+
+### What is Amazon VPC?
+
+Amazon VPC (Virtual Private Cloud) is a service that enables you to create a private, isolated network within AWS where you can launch and manage cloud resources. It provides complete control over your networking configuration, including IP addresses, subnets, routing, and security rules. and it is useful because it allows you to securely organize and protect your resources, control how they communicate with each other and the internet, and build scalable, highly available cloud architectures that meet different application and security requirements.
+
+### How I used Amazon VPC in this project
+
+In today's project, I used Amazon VPC to establish VPC peering between two separate Virtual Private Clouds, enabling resources in each VPC to communicate securely using private IP addresses. I configured the VPC peering connection, updated the route tables to direct traffic between the VPCs, and verified connectivity by testing communication between EC2 instances in the different VPCs. This exercise demonstrated how VPC peering provides seamless and secure networking across isolated AWS environments without requiring internet access or a VPN.
+
+
+### One thing I didn't expect in this project was...
+
+One thing I didn't expect in this project was that creating a VPC peering connection alone would not enable communication between the VPCs. I learned that I also needed to update the route tables on both sides to direct traffic through the peering connection. This reinforced the importance of proper routing configuration in AWS networking.
+
+
+### This project took me...
+
+This project took me about 2 hours to complete, including setting up the VPC peering connection, configuring the route tables, troubleshooting connectivity issues, and verifying communication between the EC2 instances.
+
+
+---
+
+## In the first part of my project...
+
+### Step 1 - Set up my VPC
+
+In this step, I will create 2 VPCs from scratch using the visual resource map because it's super fast
+
+### Step 2 - Create a Peering Connection
+
+In this step, I will be setting up a VPC peering connection because it will help in bridging the communication gap between the 2 VPCs
+
+### Step 3 - Update Route Tables
+
+In this step, I will update the route tables because it will set up a way for traffic coming from VPC1 to get to VPC 2, and also set up a way for traffic coming from VPC 2 to get to VPC 1
+
+### Step 4 - Launch EC2 Instances
+
+In this step, I will launch an EC2 instance in each VPC, because we can use them to test your VPC peering connection later. 
+
+---
+
+## Multi-VPC Architecture
+
+I started my project by launching the VPC and More feature, creating one AZ, one Public Subnet, no Private Subnet, and updating the route tables
+
+The CIDR blocks for VPCs 1 and 2 are 10.1.0.0/16 and 10.2.0.0/16, respectively. They have to be unique to ensure the IP addresses of the two VPCs don't overlap. An overlapping IP address will cause connection issues and routing conflicts.
+
+### I also launched 2 EC2 instances
+
+I didn't set up key pairs for these EC2 instances, as AWS helps with the management of keys. Since I am using the VPC peering feature, I don't need the hassle of managing my security here. That's one of the benefits of AWS's shared security responsibility agenda
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-peering_11111111)
+
+---
+
+## VPC Peering
+
+A VPC peering connection is a direct connection between 2 VPCs
+
+VPCs would use peering connections to let VPCs and their resources route traffic between them using their private IP addresses. This means data can now be transferred between VPCs without going through the public internet.
+
+Without a peering connection, data transfers between VPCs would use the public address - meaning VPCs have to communicate over the public internet. 
+
+The difference between a Requester and an Accepter in a peering connection is that the Requester is the VPC that initiates a peering connection. As the requester, they will be sending the other VPC an invitation to connect, while the Accepter, on the other hand, accepts the peering request initiated by the requester
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-peering_1cbb1b88)
+
+---
+
+## Updating route tables
+
+After accepting a peering connection, my VPCs' route tables need to be updated because, despite being accepted, it still doesn't know whose IP address is accepted. Updating the routes sends the right traffic to the right address
+
+My VPCs' new routes have a destination of 10.2.0.0/16 for route table 1 and 10.1.0.0/16 for route table 2. The routes' target was the peering connection 
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-peering_4a9e8014)
+
+---
+
+## In the second part of my project...
+
+### Step 5 - Use EC2 Instance Connect
+
+In this step, I will connect to Instance 1 to test our VPC peering connection, because we'll need to get one of our EC2 instances to try to talk to the other.
+
+### Step 6 - Connect to EC2 Instance 1
+
+In this step, I will try connecting to my server over the internet again because I fixed error one, but it seems stuck, so heading to error two
+
+### Step 7 - Test VPC Peering
+
+In this step, I will test VPC Peering because I need to get Instance 1 to send test messages to Instance 2
+
+---
+
+## Troubleshooting Instance Connect
+
+Next, I used EC2 Instance Connect to connect to my server over the internet.
+
+I was stopped from using EC2 Instance Connect as my EC2 Instance doesn't have a public IPv4 address
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-peering_7685490c)
+
+---
+
+## Elastic IP addresses
+
+To resolve this error, I set up Elastic IP addresses. Elastic IP addresses are static IPv4 addresses that get allocated in my AWS account
+
+Associating an Elastic IP address resolved the error because now my EC2 instance has a public address that never changes and can access the instance connect
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-peering_45663498)
+
+---
+
+## Troubleshooting ping issues
+
+To test VPC peering, I ran the command ping 10.2.13.43
+
+A successful ping test would validate my VPC peering connection because that way I'll be certain that my instance in VPC 1 can connect to my instance in VPC 2
+
+I had to update my second EC2 instance's security group because the ping test had to allow ICMP protocol on IPv4. I added a new rule that allows IPv4 from VPC 1 source
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-peering_7a29d352)
+
+---
+
+---
 
