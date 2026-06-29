@@ -1,1 +1,145 @@
+<img src="https://cdn.prod.website-files.com/677c400686e724409a5a7409/6790ad949cf622dc8dcd9fe4_nextwork-logo-leather.svg" alt="NextWork" width="300" />
+
+# Access S3 from a VPC
+
+**Project Link:** [View Project](http://nextwork.ai/projects/aws-networks-s3)
+
+**Author:** Oscar Onokwuru  
+**Email:** onokwuruoscar101@gmail.com
+
+---
+
+## Access S3 from a VPC
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-s3_3e1e79a2)
+
+---
+
+## Introducing Today's Project!
+
+### What is Amazon VPC?
+
+Amazon VPC (Virtual Private Cloud) is a service that allows you to create and manage a logically isolated virtual network within AWS. It gives you full control over your networking environment, including IP address ranges, subnets, route tables, and security settings.
+
+It is useful because it enables you to securely host AWS resources, control inbound and outbound traffic, isolate public and private workloads, and build scalable cloud architectures while maintaining a high level of network security and flexibility.
+
+
+### How I used Amazon VPC in this project
+
+In today's project, I used Amazon VPC to establish access of S3 from a VPC 
+
+### One thing I didn't expect in this project was...
+
+One thing I didn't expect in this project was the need for Access key by EC2 CLI to create and access some services in the cloud, but it made sense to me after i understood that as a service alone it doesnt have that access until its logged in by a user
+
+### This project took me...
+
+This project took me about 1.5 hours to complete, including setting up the VPC and communication between the EC2 instance and S3 Bucket
+
+
+---
+
+## In the first part of my project...
+
+### Step 1 - Architecture set up
+
+In this step, I will setup my VPC and EC2 because this is the bedrock foundation for my next step
+
+### Step 2 - Connect to my EC2 instance
+
+In this step, I will connect to your EC2 instance because I'll try to access an AWS service.
+
+### Step 3 - Set up access keys
+
+In this step, I will create access keys because I need to give EC2 instance access to your AWS environment.
+
+---
+
+## Architecture set up
+
+I started my project by launching the VPC, in a single Availability Zone, with a Public Subnet, and an EC2 instance which I attached to the VPC
+
+I also set up my S3 bucket and added 2 files to it
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-s3_4334d777)
+
+---
+
+## Running CLI commands
+
+AWS CLI is a command-line interface installed and run on my computer to control AWS services directly from the command line (i.e., my terminal). I have access to the AWS CLI because EC2 instances already have it installed.
+
+The first command I ran was aws s3 ls This command is used to list the number of s3 buckets in my account
+
+The second command I ran was "aws configure" This command is used to configure my AWS credentials 
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-s3_e7fa8776)
+
+---
+
+## Access keys
+
+### Credentials
+
+To set up my EC2 instance to interact with my AWS environment, I configured my AWS access keys and ran the "aws configure" command. 
+
+Access keys are credentials for my applications and other servers to log into AWS and talk to my AWS services/resources
+
+Secret access keys are like the passwords that pairs with my access key ID (username). You need both to access AWS services.
+
+### Best practice
+
+Although I'm using access keys in this project, a best practice alternative is to use the IAM roles with temporary credentials
+
+---
+
+## In the second part of my project...
+
+### Step 4 - Set up an S3 bucket
+
+In this step, I will create an S3 bucket with 2 files because after creating this bucket, we'll learn how to access it from our EC2 instance and do things like checking what objects are in the bucket
+
+### Step 5 - Connecting to my S3 bucket
+
+In this step, I will connect to my S3 bucket because my EC2 instance needs to connect to my s3 bucket
+
+---
+
+## Connecting to my S3 bucket
+
+The first command I ran was aws s3 ls This command is used to list the number of s3 buckets in my account
+
+When I ran the command "aws s3 ls" again, the terminal responded with 2026-06-23 17:01:12 nextwork-vpc-project-buchi
+2026-05-19 13:06:35 nextwork-website-project-techwithbuchi
+2025-11-20 15:35:36 smartcare-connect-dev-medical-files
+2025-11-22 17:34:02 smartcare-staging-medical-files
+2025-11-22 17:09:21 smartcare-terraform-state-staging
+2026-03-31 07:19:50 smsquickstartstack-39764f-smsconfigurationsetbucke-fzp1kfnj0v5e This indicated my EC2 instance has successfully connected to my AWS CLI via my access keys and can now read and execute commands within the IAM permissions of the user connected
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-s3_4334d778)
+
+---
+
+## Connecting to my S3 bucket
+
+Another CLI command I ran was "aws s3 ls s3://nextwork-vpc-project-buchi" which returned 2026-06-23 17:01:47    2431554 NextWork - Denzel is awesome.png
+2026-06-23 17:01:44    2399812 NextWork - Lelo is awesome.png
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-s3_4334d779)
+
+---
+
+## Uploading objects to S3
+
+To upload a new file to my bucket, I first ran the command "sudo touch /tmp/test.txt" This command creates a new file named test.txt inside folder /tmp
+
+The second command I ran was "aws s3 cp /tmp/test.txt s3://nextwork-vpc-project-buchi" This command will move the file test.txt to the s3 bucket nextwork-vpc-project-buchi
+
+The third command I ran was "aws s3 ls s3://nextwork-vpc-project-buchi," which validated that the newly created file test.txt is present in the bucket alongside the other files there
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-s3_3e1e79a2)
+
+---
+
+---
 
