@@ -1,1 +1,103 @@
+<img src="https://cdn.prod.website-files.com/677c400686e724409a5a7409/6790ad949cf622dc8dcd9fe4_nextwork-logo-leather.svg" alt="NextWork" width="300" />
+
+# Testing VPC Connectivity
+
+**Project Link:** [View Project](http://nextwork.ai/projects/aws-networks-connectivity)
+
+**Author:** Oscar Onokwuru  
+**Email:** onokwuruoscar101@gmail.com
+
+---
+
+## Testing VPC Connectivity
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-connectivity_8ee57662)
+
+---
+
+## Introducing Today's Project!
+
+### What is Amazon VPC?
+
+Amazon VPC is a service that allows you to create and manage a logically isolated virtual network within AWS. It gives you full control over your networking environment, including IP address ranges, subnets, route tables, and security settings, and it is useful because it enables you to securely host AWS resources, control inbound and outbound traffic, isolate public and private workloads, and build scalable cloud architectures while maintaining a high level of network security and flexibility.
+
+### How I used Amazon VPC in this project
+
+In today's project, I used Amazon VPC to create a secure networking environment for my EC2 instances. I configured public and private subnets, assigned appropriate security groups, and established communication between instances. The Public EC2 instance could be accessed from the internet, while the private EC2 instance remained isolated and was only accessible through the public instance. This setup demonstrated how Amazon VPC can be used to manage network traffic and protect cloud resources
+
+### One thing I didn't expect in this project was...
+
+One thing I didn't expect in this project was how the connectivity made sense to me after I calmly followed through, and how secure and tight AWS Cloud is. networks' approvals needed to be explicitly stated and understood.
+
+### This project took me...
+
+This project took me about 2 hours to complete
+
+---
+
+## Connecting to an EC2 Instance
+
+Connectivity refers to how well different parts of your network communicate with each other and with external networks. It's essential because connectivity is how data flows smoothly across your network, powering everything from simple web hosting on the Internet to complex operations
+
+My first connectivity test was whether I could connect to the EC2 NextWork Public server via the EC2 Instance Connect
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-connectivity_88727bef)
+
+---
+
+## EC2 Instance Connect
+
+I connected to my EC2 instance using EC2 Instance Connect, an alternative to SSH. Instance Connect lets me securely connect to my EC2 instances directly from the AWS Management Console. I'm still using SSH, but with all the key management handling it's handled for me. This takes away a lot of the complexity of setting up SSH.
+
+My first attempt at gaining direct access to my public server resulted in an error because I had not configured the correct inbound rules for both the public and private security groups.
+
+I fixed this error by configuring the public security group's inbound rule to allow SSH traffic from anywhere (IPv4). While this is not considered the best security practice, it is acceptable for the scope of this project.
+
+I also configured the private security group's inbound rule to allow TCP traffic from the public security group (using a custom security group rule). This configuration enables the instances to communicate with each other while still preventing direct public access to the private instance.
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-connectivity_1cbb1b88)
+
+---
+
+## Connectivity Between Servers
+
+Ping is a common computer tool used to check whether your computer can communicate with another computer on a device or a network. I used ping to test the connectivity between my public instance server and my private instance server
+
+The ping command I ran was ping 10.0.136.90
+
+The first ping returned a single line. This meant that my Public Server has sent out a ping message... and that's about it.
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-connectivity_defghijk)
+
+---
+
+## Troubleshooting Connectivity
+
+I troubleshooted this by investigating whether NextWork Private Server is allowing ICMP traffic. On both the Private NACL and Private Security Group.
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-connectivity_4a9e8014)
+
+---
+
+## Connectivity to the Internet
+
+Curl is a tool just like ping to test connectivity of a network, while ping checks if one can contact another, curl is used to transfer data to and from a server.
+
+I used curl to test the connectivity between my public server and nexwork.org, https://learn.nextwork.org/projects/aws-host-a-website-on-s3, example.com
+
+### Ping vs Curl
+
+Ping and curl are different because ping checks if one can contact another, while curl is used to transfer data to and from a server
+
+---
+
+## Connectivity to the Internet
+
+I ran the curl command curl https://learn.nextwork.org/projects/aws-host-a-website-on-s3, which returned the HTML of the website
+
+![Image](http://nextwork.ai/soothed_gold_swift_blueberry/uploads/aws-networks-connectivity_8ee57662)
+
+---
+
+---
 
